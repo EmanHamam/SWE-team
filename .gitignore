@@ -1,2 +1,5 @@
 bin/
 obj/
+swe-team.depend
+swe-team.layout
+shell.c
