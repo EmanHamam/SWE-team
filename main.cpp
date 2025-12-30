@@ -5,6 +5,7 @@
 #include <conio.h>
 #include "PropertyManager.h"
 #include "UserManager.h"
+#include "DBManager.h"
 using namespace std;
 
 void textattr(int i)
@@ -61,19 +62,20 @@ void drawMenu(int selected)
 
     textattr(15);
 }
-bool executeMenuAction(int choice,sqlite3* db)
+bool executeMenuAction(int choice, sqlite3* db, DBManager* dbManager)
 {
     system("cls");
     PropertyManager pm;
+    UserManager um;
 
     switch (choice)
     {
     case 0:
-        pm.viewAllProperties(db);
+        pm.viewAllProperties(db, dbManager);
         break;
 
     case 1:
-        cout << "Login screen...\n";
+        um.login(dbManager);
         break;
 
     case 2:
@@ -85,11 +87,9 @@ bool executeMenuAction(int choice,sqlite3* db)
         return false; // EXIT PROGRAM
     }
 
-    cout << "\n\nPress any key to return to main menu...";
-    _getch();
     return true;
 }
-void runMainMenu(sqlite3* db)
+void runMainMenu(sqlite3* db, DBManager* dbManager)
 {
     int selected = 0;
     char key;
@@ -116,68 +116,22 @@ void runMainMenu(sqlite3* db)
         }
         else if (key == 13) // ENTER
         {
-            running = executeMenuAction(selected,db);
+            running = executeMenuAction(selected, db, dbManager);
         }
     }
 }
 
 
-// Callback function to handle query results
-static int callback(void* NotUsed, int argc, char** argv, char** azColName) {
-    for (int i = 0; i < argc; i++) {
-        std::cout << (azColName[i] ? azColName[i] : "NULL") << " = "
-                  << (argv[i] ? argv[i] : "NULL") << std::endl;
-    }
-    std::cout << std::endl;
-    return 0;
-}
-
 int main() {
-    sqlite3* db;
-    char* zErrMsg = 0;
-    int rc;
-    const char* db_name = "test.db";
-
-    // 1. Open Database
-    rc = sqlite3_open(db_name, &db);
-    if (rc) {
-        std::cerr << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
+    DBManager dbManager("test.db");
+    
+    if (!dbManager.getDB()) {
         return 0;
-    } else {
-        std::cout << "Opened database successfully\n";
     }
 
-    // 2. Create SQL statement
-    /*std::string sql = "CREATE TABLE IF NOT EXISTS greetings ("  \
-                      "id INTEGER PRIMARY KEY AUTOINCREMENT," \
-                      "message TEXT NOT NULL);" \
-                      "INSERT INTO greetings (message) VALUES ('Hello World from SQLite!');" \
-                      "SELECT * FROM greetings;";*/
-    string sql = "CREATE TABLE IF NOT EXISTS properties ("
-             "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-             "name TEXT, location TEXT, price REAL, type TEXT, "
-             "isAvailable INTEGER, InfoNumber TEXT);" // Added InfoNumber here
+    dbManager.initializeDatabase();
 
-             "INSERT INTO properties (name, location, price, type, isAvailable, InfoNumber) VALUES "
-             "('Ocean View Villa', 'Malibu', 1250000.0, 'Buy', 1, '555-0101'),"
-             "('Downtown Apt', 'New York', 3500.0, 'Rent', 1, '555-0202'),"
-             "('Mountain Cabin', 'Aspen', 450000.0, 'Buy', 0, '555-0303');";
-            //sqlite3_exec(db, sql.c_str(), NULL, 0, NULL);
-
-    // 3. Execute SQL statement
-    rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
-
-    if (rc != SQLITE_OK) {
-        std::cerr << "SQL error: " << zErrMsg << std::endl;
-        sqlite3_free(zErrMsg);
-    } else {
-        std::cout << "Operation done successfully\n";
-    }
-
-    runMainMenu(db);
-    // 4. Close Database
-    sqlite3_close(db);
-
+    runMainMenu(dbManager.getDB(), &dbManager);
 
     return 0;
 }

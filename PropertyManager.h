@@ -1,7 +1,6 @@
 #ifndef PROPERTY_MANAGER_H
 #define PROPERTY_MANAGER_H
 
-#include "UserManager.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -9,6 +8,7 @@
 #include "sqlite3.h"
 #include <windows.h>
 #include <conio.h>
+#include "UserManager.h"
 
 using namespace std;
 
@@ -32,8 +32,17 @@ void setXY(int x, int y) {
 }
 
 class PropertyManager {
+private:
+    DBManager* dbManager;
+
 public:
-    void viewAllProperties(sqlite3* db) {
+    PropertyManager(DBManager* db = nullptr) : dbManager(db) {}
+
+    void setDBManager(DBManager* db) {
+        dbManager = db;
+    }
+
+    void viewAllProperties(sqlite3* db, DBManager* dbMgr = nullptr) {
         vector<Property> props = fetchProperties(db);
         if (props.empty()) {
             system("cls");
@@ -78,7 +87,7 @@ public:
                 else if (key == 80) selected = (selected == (int)props.size() - 1) ? 0 : selected + 1;
             }
             else if (key == 13) {
-                showDetails(props[selected],db);
+                showDetails(props[selected], db, dbMgr);
                 system("cls");
                 drawTableFrame();
             }
@@ -87,7 +96,7 @@ public:
             }
         }
     }
-    void showDetails(Property p, sqlite3* db) {
+    void showDetails(Property p, sqlite3* db, DBManager* dbMgr = nullptr) {
         bool showHidden = false;
         int selectedOption = 0; // 0: Go Back, 1: Login, 2: Exit
 
@@ -168,7 +177,7 @@ public:
                     if (selectedOption == 0) return;
                     if (selectedOption == 1) {
                         UserManager um;
-                        if (um.login(db)) continue; // Refresh after login
+                        if (dbMgr && um.login(dbMgr)) continue; // Refresh after login
                     }
                     if (selectedOption == 2) exit(0);
                 } else if (p.available) {
