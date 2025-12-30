@@ -31,17 +31,22 @@ void drawHeader() {
     textattr(11);
     gotoxy(35, 8); cout << "--- PROPERTY MANAGEMENT SYSTEM ---";
 }
-void drawMenu(int selected)
+void drawMenu(int selected, bool firstDraw)
 {
-    system("cls");
+    // Only clear the full screen and draw header on the first entry
+    // or after returning from another screen.
+    if (firstDraw) {
+        system("cls");
+        drawHeader();
+    }
 
-    drawHeader();
     const char* menu[] = {
         "View Properties",
         "Login",
         "Search Properties",
         "Exit"
     };
+
     int y = 12;
     for (int i = 0; i < 4; i++)
     {
@@ -49,22 +54,22 @@ void drawMenu(int selected)
 
         if (i == selected)
         {
-            textattr(240);
-            cout << "> " << menu[i];
+            textattr(240); // Highlight: Black text on White background
+            cout << "> " << menu[i] << "  "; // Extra spaces to clear old chars
         }
         else
         {
-            textattr(15);
-            cout << "  " << menu[i];
+            textattr(15); // Normal: White text on Black background
+            cout << "  " << menu[i] << "  ";
         }
     }
-
     textattr(15);
 }
-bool executeMenuAction(int choice,sqlite3* db)
+bool executeMenuAction(int choice, sqlite3* db)
 {
     system("cls");
     PropertyManager pm;
+    UserManager um;
 
     switch (choice)
     {
@@ -73,20 +78,27 @@ bool executeMenuAction(int choice,sqlite3* db)
         break;
 
     case 1:
-        cout << "Login screen...\n";
+        if (um.login(db)) {
+            textattr(10); cout << "\nLogin Successful!";
+        }
         break;
 
     case 2:
-        cout << "Search properties...\n";
+        // You can add your search function call here later
+        cout << "Search functionality coming soon...";
         break;
 
     case 3:
+        textattr(12);
         cout << "Exiting system...\n";
-        return false; // EXIT PROGRAM
+        return false;
     }
 
-    cout << "\n\nPress any key to return to main menu...";
-    _getch();
+    if (choice != 3) {
+        textattr(8);
+        cout << "\n\nPress any key to return to main menu...";
+        _getch();
+    }
     return true;
 }
 void runMainMenu(sqlite3* db)
@@ -94,6 +106,9 @@ void runMainMenu(sqlite3* db)
     int selected = 0;
     char key;
     bool running = true;
+    bool needsFullRedraw = true; // Flag to control system("cls")
+
+    // Hide Cursor
     CONSOLE_CURSOR_INFO cursorInfo;
     GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
     cursorInfo.bVisible = false;
@@ -101,22 +116,23 @@ void runMainMenu(sqlite3* db)
 
     while (running)
     {
-        drawMenu(selected);
+        drawMenu(selected, needsFullRedraw);
+        needsFullRedraw = false; // After the first draw, don't cls again
+
         key = _getch();
 
-        if (key == 72) // UP
+        if (key == 72 || key == 'w' || key == 'W') // UP
         {
-            selected--;
-            if (selected < 0) selected = 3;
+            selected = (selected <= 0) ? 3 : selected - 1;
         }
-        else if (key == 80) // DOWN
+        else if (key == 80 || key == 's' || key == 'S') // DOWN
         {
-            selected++;
-            if (selected > 3) selected = 0;
+            selected = (selected >= 3) ? 0 : selected + 1;
         }
         else if (key == 13) // ENTER
         {
-            running = executeMenuAction(selected,db);
+            running = executeMenuAction(selected, db);
+            needsFullRedraw = true; // Returning from an action needs a clean screen
         }
     }
 }
