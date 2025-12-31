@@ -12,7 +12,6 @@
 #include "sqlite3.h"
 #include "DBManager.h"
 #include "PropertyManager.h"
-#include "Helpers.h"
 using namespace std;
 
 
@@ -204,7 +203,7 @@ private:
             "NoOfRooms, NoOfBaths, Area FROM properties WHERE 1=1 ";
 
         if (currentFilter.maxPrice < 999999999)
-            sql += " AND price <= " + numToStr(currentFilter.maxPrice);
+            sql += " AND price <= " + to_string(currentFilter.maxPrice);
 
         if (!currentFilter.type.empty())
             sql += " AND type = '" + currentFilter.type + "'";
@@ -213,13 +212,13 @@ private:
             sql += " AND LOWER(location) LIKE '%" + currentFilter.location + "%'";
 
         if (currentFilter.minRooms > 0)
-            sql += " AND NoOfRooms >= " + numToStr(currentFilter.minRooms);
+            sql += " AND NoOfRooms >= " + to_string(currentFilter.minRooms);
 
         if (currentFilter.minBaths > 0)
-            sql += " AND NoOfBaths >= " + numToStr(currentFilter.minBaths);
+            sql += " AND NoOfBaths >= " + to_string(currentFilter.minBaths);
 
         if (currentFilter.minArea > 0)
-            sql += " AND Area >= " + numToStr(currentFilter.minArea);
+            sql += " AND Area >= " + to_string(currentFilter.minArea);
 
         sql += " LIMIT 10";
         return sql;
