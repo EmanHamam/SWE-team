@@ -9,6 +9,7 @@
 #include <windows.h>
 #include <conio.h>
 #include "UserManager.h"
+#include "DBManager.h"
 
 using namespace std;
 
@@ -20,6 +21,9 @@ struct Property {
     string type;
     int available;
     string infoNumber;
+    int noOfRooms;
+    int noOfBaths;
+    double area;
 };
 
 void setAttr(int i) {
@@ -42,7 +46,9 @@ public:
         dbManager = db;
     }
 
+    // ================= VIEW ALL PROPERTIES =================
     void viewAllProperties(sqlite3* db, DBManager* dbMgr = nullptr) {
+
         vector<Property> props = fetchProperties(db);
         if (props.empty()) {
             system("cls");
@@ -61,19 +67,18 @@ public:
             for (int i = 0; i < (int)props.size(); i++) {
                 int rowY = 8 + (i * 2);
 
-                if (i == selected) {
-                    setAttr(240); // Highlight
-                } else {
-                    setAttr(15);  // Normal
-                }
+                setAttr(i == selected ? 240 : 15);
 
                 setXY(4, rowY);
-                cout << "                                                                        ";
+                cout << "                                                                                      ";
 
                 setXY(5, rowY);  cout << props[i].id;
                 setXY(12, rowY); cout << props[i].name;
-                setXY(34, rowY); cout << props[i].location;
-                setXY(54, rowY); cout << "$" << fixed << setprecision(2) << props[i].price;
+                setXY(32, rowY); cout << props[i].location;
+                setXY(52, rowY); cout << "$" << fixed << setprecision(2) << props[i].price;
+                setXY(68, rowY); cout << props[i].noOfRooms;
+                setXY(80, rowY); cout << props[i].noOfBaths;
+                setXY(88, rowY); cout << props[i].area << " m";
             }
 
             setAttr(8);
@@ -96,101 +101,80 @@ public:
             }
         }
     }
+
+    // ================= PROPERTY DETAILS =================
     void showDetails(Property p, sqlite3* db, DBManager* dbMgr = nullptr) {
+
         bool showHidden = false;
-        int selectedOption = 0; // 0: Go Back, 1: Login, 2: Exit
+        int selectedOption = 0;
 
         while (true) {
             system("cls");
-            setAttr(11); // Cyan Border
-            // Draw Box
-            for(int i=0; i<22; i++) { setXY(25, 3+i); cout << "||"; setXY(75, 3+i); cout << "||"; }
+            setAttr(11);
+
+            for (int i = 0; i < 22; i++) {
+                setXY(25, 3 + i); cout << "||";
+                setXY(75, 3 + i); cout << "||";
+            }
+
             setXY(25, 3);  cout << "====================================================";
             setXY(25, 25); cout << "====================================================";
 
-            setAttr(14); // Yellow Title
+            setAttr(14);
             setXY(38, 5); cout << "PROPERTY DOSSIER: " << p.id;
 
             setAttr(15);
-            setXY(30, 7);  cout << "Name:           " << p.name;
-            setXY(30, 8);  cout << "Location:       " << p.location;
+            setXY(30, 7);  cout << "Name:            " << p.name;
+            setXY(30, 8);  cout << "Location:        " << p.location;
+            setXY(30, 9);  cout << "Number of Rooms: " << p.noOfRooms;
+            setXY(30, 10); cout << "Number of Baths: " << p.noOfBaths;
+            setXY(30, 11); cout << "Area:            " << p.area << " m";
 
             if (p.type == "Rent") {
                 double pricePerDay = p.price;
                 double pricePerMonth = p.price * 30 * 0.8;
-                setXY(30, 10); cout << "Price/Day:      $" << fixed << setprecision(2) << pricePerDay;
-                setXY(30, 11); cout << "Price/Month:    $" << pricePerMonth << " (20% Disc!)";
+                setXY(30, 12); cout << "Price/Day:       $" << fixed << setprecision(2) << pricePerDay;
+                setXY(30, 13); cout << "Price/Month:     $" << pricePerMonth << " (20% Disc!)";
             } else {
-                setXY(30, 10); cout << "Purchase Price: $" << fixed << setprecision(2) << p.price;
+                setXY(30, 12); cout << "Purchase Price:  $" << fixed << setprecision(2) << p.price;
             }
 
-            setXY(30, 13); cout << "Availability:   ";
-            if (!p.available) {
-                setAttr(12); cout << "LOCKED / UNAVAILABLE";
-            } else {
-                setAttr(10); cout << "AVAILABLE FOR " << (p.type == "Rent" ? "LEASING" : "SALE");
-            }
+            setXY(30, 15); cout << "Availability:    ";
+            setAttr(p.available ? 10 : 12);
+            cout << (p.available ? "AVAILABLE" : "LOCKED / UNAVAILABLE");
 
             setAttr(15);
-            setXY(30, 15); cout << "Contact:        " << (showHidden ? p.infoNumber : "******** (Unlock Below)");
+            setXY(30, 17); cout << "Contact:         "
+                               << (showHidden ? p.infoNumber : "******** (Unlock Below)");
 
-            setXY(27, 17);
-            setAttr(14);
+            // Guest / Logged-in UI
+            setXY(27, 19);
             if (!UserManager::currentUser.isLoggedIn) {
+                setAttr(14);
                 cout << "Guest Mode: Login to unlock contact info.";
-
-                string options[] = {"1. Go Back", "2. Login", "3. Exit System"};
-                for(int i = 0; i < 3; i++) {
-                    setXY(30, 19 + i);
-                    if (i == selectedOption) {
-                        setAttr(240); // Highlight
-                        cout << " > " << options[i] << " ";
-                    } else {
-                        setAttr(15);
-                        cout << "   " << options[i];
-                    }
-                }
             } else {
-                // Logged in UI
                 setAttr(10);
                 cout << "User: " << UserManager::currentUser.email;
-                setXY(30, 20);
-                if (showHidden) {
-                    setAttr(10); cout << "CONFIRMED! Contact revealed.";
-                    setXY(30, 22); setAttr(8); cout << "Press any key to return...";
-                    _getch(); return;
-                } else {
-                    setAttr(240); cout << " [ PRESS ENTER TO " << (p.type == "Rent" ? "RENT" : "BUY") << " ] ";
-                    setXY(30, 22); setAttr(15); cout << " [ ESC ] to Cancel ";
-                }
             }
 
-            // Input handling for the mini-menu
             int key = _getch();
-            if (key == 224) { // Arrows
-                key = _getch();
-                if (key == 72) selectedOption = (selectedOption == 0) ? 2 : selectedOption - 1; // Up
-                if (key == 80) selectedOption = (selectedOption == 2) ? 0 : selectedOption + 1; // Down
+            if (key == 13 && UserManager::currentUser.isLoggedIn && p.available) {
+                showHidden = true;
             }
-            else if (key == 13) { // Enter
-                if (!UserManager::currentUser.isLoggedIn) {
-                    if (selectedOption == 0) return;
-                    if (selectedOption == 1) {
-                        UserManager um;
-                        if (dbMgr && um.login(dbMgr)) continue; // Refresh after login
-                    }
-                    if (selectedOption == 2) exit(0);
-                } else if (p.available) {
-                    showHidden = true; // Unlock contact
-                }
-            }
-            else if (key == 27) return; // Esc
+            else if (key == 27) return;
         }
     }
+
 private:
+    // ================= FETCH PROPERTIES =================
     vector<Property> fetchProperties(sqlite3* db) {
+
         vector<Property> list;
-        const char* sql = "SELECT id, name, location, price, type, isAvailable, InfoNumber FROM properties LIMIT 10";
+
+        const char* sql =
+            "SELECT id, name, location, price, type, isAvailable, InfoNumber, "
+            "NoOfRooms, NoOfBaths FROM properties LIMIT 10";
+
         sqlite3_stmt* stmt;
 
         if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
@@ -203,30 +187,25 @@ private:
                 p.type = (const char*)sqlite3_column_text(stmt, 4);
                 p.available = sqlite3_column_int(stmt, 5);
                 p.infoNumber = (const char*)sqlite3_column_text(stmt, 6);
+                p.noOfRooms = sqlite3_column_int(stmt, 7);
+                p.noOfBaths = sqlite3_column_int(stmt, 8);
+                p.area = sqlite3_column_double(stmt, 9);
                 list.push_back(p);
             }
         }
         sqlite3_finalize(stmt);
         return list;
     }
-    void clearRows(int startY, int endY) {
-        setAttr(15);
-        for (int y = startY; y <= endY; y++) {
-            setXY(0, y);
-            cout << "                                                                                ";
-        }
-    }
 
+    // ================= UI FRAME =================
     void drawTableFrame() {
         setAttr(11);
         setXY(30, 2); cout << "========= PROPERTY INVENTORY =========";
         setAttr(240);
         setXY(4, 6);
-        cout << " ID    | NAME                | LOCATION          | PRICE              ";
-        setAttr(15);
+        cout << " ID | NAME              | LOCATION        | PRICE        | ROOMS NO    | BATHS NO    | AREA     ";
+            setAttr(15);
     }
-
-
 };
 
 #endif
