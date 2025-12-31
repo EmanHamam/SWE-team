@@ -1,6 +1,7 @@
 #ifndef PROPERTY_MANAGER_H
 #define PROPERTY_MANAGER_H
 
+#include "UserManager.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -8,9 +9,11 @@
 #include "sqlite3.h"
 #include <windows.h>
 #include <conio.h>
-#include "UserManager.h"
 
 using namespace std;
+
+extern bool isLoggedIn;
+extern string currentUserEmail;
 
 struct Property {
     int id;
@@ -32,17 +35,8 @@ void setXY(int x, int y) {
 }
 
 class PropertyManager {
-private:
-    DBManager* dbManager;
-
 public:
-    PropertyManager(DBManager* db = nullptr) : dbManager(db) {}
-
-    void setDBManager(DBManager* db) {
-        dbManager = db;
-    }
-
-    void viewAllProperties(sqlite3* db, DBManager* dbMgr = nullptr) {
+    void viewAllProperties(sqlite3* db) {
         vector<Property> props = fetchProperties(db);
         if (props.empty()) {
             system("cls");
@@ -87,7 +81,7 @@ public:
                 else if (key == 80) selected = (selected == (int)props.size() - 1) ? 0 : selected + 1;
             }
             else if (key == 13) {
-                showDetails(props[selected], db, dbMgr);
+                showDetails(props[selected],db);
                 system("cls");
                 drawTableFrame();
             }
@@ -96,7 +90,7 @@ public:
             }
         }
     }
-    void showDetails(Property p, sqlite3* db, DBManager* dbMgr = nullptr) {
+    void showDetails(Property p, sqlite3* db) {
         bool showHidden = false;
         int selectedOption = 0; // 0: Go Back, 1: Login, 2: Exit
 
@@ -136,7 +130,7 @@ public:
 
             setXY(27, 17);
             setAttr(14);
-            if (!UserManager::currentUser.isLoggedIn) {
+            if (!isLoggedIn) {
                 cout << "Guest Mode: Login to unlock contact info.";
 
                 string options[] = {"1. Go Back", "2. Login", "3. Exit System"};
@@ -153,7 +147,7 @@ public:
             } else {
                 // Logged in UI
                 setAttr(10);
-                cout << "User: " << UserManager::currentUser.email;
+                cout << "User: " << currentUserEmail;
                 setXY(30, 20);
                 if (showHidden) {
                     setAttr(10); cout << "CONFIRMED! Contact revealed.";
@@ -173,11 +167,13 @@ public:
                 if (key == 80) selectedOption = (selectedOption == 2) ? 0 : selectedOption + 1; // Down
             }
             else if (key == 13) { // Enter
-                if (!UserManager::currentUser.isLoggedIn) {
+                if (!isLoggedIn) {
                     if (selectedOption == 0) return;
                     if (selectedOption == 1) {
-                        UserManager um;
-                        if (dbMgr && um.login(dbMgr)) continue; // Refresh after login
+                         UserManager um;
+                        bool success = um.login(db);
+                        if (success) continue;
+                        else _getch();
                     }
                     if (selectedOption == 2) exit(0);
                 } else if (p.available) {

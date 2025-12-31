@@ -156,3 +156,224 @@
 	<sys/uio.h>
 	<math.h>
 
+1767112392 source:c:\users\omar\desktop\swe 1st\swe-team\main.cpp
+	<iostream>
+	"sqlite3.h"
+	<string>
+	<windows.h>
+	<conio.h>
+	"PropertyManager.h"
+	"UserManager.h"
+	"DBManager.h"
+	"ConsoleUtils.h"
+
+1767108257 c:\users\omar\desktop\swe 1st\swe-team\sqlite3.h
+	<stdarg.h>
+
+1767111845 c:\users\omar\desktop\swe 1st\swe-team\propertymanager.h
+	"UserManager.h"
+	<iostream>
+	<vector>
+	<string>
+	<iomanip>
+	"sqlite3.h"
+	<windows.h>
+	<conio.h>
+
+1767112015 c:\users\omar\desktop\swe 1st\swe-team\usermanager.h
+	"sqlite3.h"
+
+1767112648 c:\users\omar\desktop\swe 1st\swe-team\consoleutils.h
+	<windows.h>
+	<iostream>
+
+1767108257 c:\users\omar\desktop\swe 1st\swe-team\dbmanager.h
+	<iostream>
+	<string>
+	<vector>
+	"sqlite3.h"
+
+1767108257 source:c:\users\omar\desktop\swe 1st\swe-team\sqlite3.c
+	<vxWorks.h>
+	<pthread.h>
+	"mingw.h"
+	"_mingw.h"
+	<stdarg.h>
+	"sqlite_cfg.h"
+	<stdint.h>
+	<inttypes.h>
+	<intrin.h>
+	<cmnintrin.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<stddef.h>
+	<ctype.h>
+	<TargetConditionals.h>
+	<time.h>
+	<sys/sysctl.h>
+	<malloc/malloc.h>
+	<libkern/OSAtomic.h>
+	<malloc.h>
+	<pthread.h>
+	"windows.h"
+	<sys/cygwin.h>
+	<sys/stat.h>
+	<unistd.h>
+	<errno.h>
+	<process.h>
+	<math.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<unistd.h>
+	<sys/time.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<sys/ioctl.h>
+	<unistd.h>
+	<sys/time.h>
+	<errno.h>
+	<sys/mman.h>
+	<sys/file.h>
+	<sys/param.h>
+	<semaphore.h>
+	<limits.h>
+	<sys/mount.h>
+	<utime.h>
+	<sys/dcmd_blk.h>
+	<sys/statvfs.h>
+	<dlfcn.h>
+	<Windows.h>
+	"tclsqlite.h"
+	"sqlite3rtree.h"
+	<ctype.h>
+	<unicode/utypes.h>
+	<unicode/uregex.h>
+	<unicode/ustring.h>
+	<unicode/ucol.h>
+	<unicode/ubrk.h>
+	<unicode/utf16.h>
+	<sys/uio.h>
+	<math.h>
+
+1767111802 source:c:\users\omar\desktop\swe 1st\swe-team\usermanager.cpp
+	"UserManager.h"
+	<iostream>
+	<conio.h>
+	<windows.h>
+	<cstring>
+	"ConsoleUtils.h"
+
+1767105066 source:e:\supertryhard\swe\project\swe-team\sqlite3.c
+	<vxWorks.h>
+	<pthread.h>
+	"mingw.h"
+	"_mingw.h"
+	<stdarg.h>
+	"sqlite_cfg.h"
+	<stdint.h>
+	<inttypes.h>
+	<intrin.h>
+	<cmnintrin.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<stddef.h>
+	<ctype.h>
+	<TargetConditionals.h>
+	<time.h>
+	<sys/sysctl.h>
+	<malloc/malloc.h>
+	<libkern/OSAtomic.h>
+	<malloc.h>
+	<pthread.h>
+	"windows.h"
+	<sys/cygwin.h>
+	<sys/stat.h>
+	<unistd.h>
+	<errno.h>
+	<process.h>
+	<math.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<unistd.h>
+	<sys/time.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<sys/ioctl.h>
+	<unistd.h>
+	<sys/time.h>
+	<errno.h>
+	<sys/mman.h>
+	<sys/file.h>
+	<sys/param.h>
+	<semaphore.h>
+	<limits.h>
+	<sys/mount.h>
+	<utime.h>
+	<sys/dcmd_blk.h>
+	<sys/statvfs.h>
+	<dlfcn.h>
+	<Windows.h>
+	"tclsqlite.h"
+	"sqlite3rtree.h"
+	<ctype.h>
+	<unicode/utypes.h>
+	<unicode/uregex.h>
+	<unicode/ustring.h>
+	<unicode/ucol.h>
+	<unicode/ubrk.h>
+	<unicode/utf16.h>
+	<sys/uio.h>
+	<math.h>
+
+1767149070 source:e:\supertryhard\swe\project\swe-team\main.cpp
+	<iostream>
+	"sqlite3.h"
+	<string>
+	<windows.h>
+	<conio.h>
+	"PropertyManager.h"
+	"UserManager.h"
+	"DBManager.h"
+	"ConsoleUtils.h"
+
+1767105066 e:\supertryhard\swe\project\swe-team\sqlite3.h
+	<stdarg.h>
+
+1767149816 e:\supertryhard\swe\project\swe-team\propertymanager.h
+	"UserManager.h"
+	<iostream>
+	<vector>
+	<string>
+	<iomanip>
+	"sqlite3.h"
+	<windows.h>
+	<conio.h>
+
+1767144697 e:\supertryhard\swe\project\swe-team\usermanager.h
+	"sqlite3.h"
+
+1767138732 e:\supertryhard\swe\project\swe-team\dbmanager.h
+	<iostream>
+	<string>
+	<vector>
+	"sqlite3.h"
+
+1767142695 e:\supertryhard\swe\project\swe-team\consoleutils.h
+	<windows.h>
+	<iostream>
+
+1767149070 source:e:\supertryhard\swe\project\swe-team\usermanager.cpp
+	"UserManager.h"
+	<iostream>
+	<conio.h>
+	<windows.h>
+	<cstring>
+	"ConsoleUtils.h"
+	<regex>
+
