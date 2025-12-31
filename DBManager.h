@@ -51,10 +51,13 @@ public:
         return true;
     }
 
-    // ---------------- DATABASE INITIALIZATION ----------------
-    void initializeDatabase() {
 
+void initializeDatabase() {
         std::string sql =
+            "CREATE TABLE IF NOT EXISTS owners ("
+            "owner_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+            "name TEXT NOT NULL);"
+
             "CREATE TABLE IF NOT EXISTS properties ("
             "id INTEGER PRIMARY KEY AUTOINCREMENT, "
             "name TEXT, "
@@ -66,6 +69,8 @@ public:
             "NoOfRooms INTEGER, "
             "NoOfBaths INTEGER, "
             "Area REAL);"
+            "owner_id INTEGER, "
+            "FOREIGN KEY (owner_id) REFERENCES owners(owner_id));"
 
             "CREATE TABLE IF NOT EXISTS users ("
             "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -89,15 +94,28 @@ public:
             "('Downtown Apt', 'New York', 3500.0, 'Rent', 1, '555-0202', 2, 1, 850.0),"
             "('Mountain Cabin', 'Aspen', 450000.0, 'Buy', 0, '555-0303', 3, 2, 1200.0);"
 
+            // Insert owners
+            "INSERT OR IGNORE INTO owners (name) VALUES "
+            "('John Doe'),"
+            "('Alice Smith'),"
+            "('Michael Brown');"
+
+            // Insert properties with owner_id
+            "INSERT OR IGNORE INTO properties (name, location, price, type, isAvailable, InfoNumber, owner_id) VALUES "
+            "('Ocean View Villa', 'Malibu', 1250000.0, 'Buy', 1, '555-0101', 1),"
+            "('Downtown Apt', 'New York', 3500.0, 'Rent', 1, '555-0202', 2),"
+            "('Mountain Cabin', 'Aspen', 450000.0, 'Buy', 0, '555-0303', 3);"
+
+            // Insert default users
             "INSERT OR IGNORE INTO users (email, password, isAdmin) VALUES "
             "('admin@system.com', 'admin123', 1),"
             "('user@system.com', 'user123', 0);";
 
         executeQuery(sql);
-
         // Migration for old databases
         migrateAddRoomsBathsAndArea();
     }
+
 
     // ---------------- MIGRATION ----------------
     void migrateAddRoomsBathsAndArea() {
@@ -138,9 +156,8 @@ public:
 
         if (!db) return false;
 
-        std::string sql =
-            "SELECT id, email, isAdmin FROM users WHERE email = ? AND password = ?;";
 
+        std::string sql = "SELECT id, email, isAdmin FROM users WHERE email = ? AND password = ?;";
         sqlite3_stmt* stmt;
         bool success = false;
 

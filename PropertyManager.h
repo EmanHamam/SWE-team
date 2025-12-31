@@ -1,6 +1,7 @@
 #ifndef PROPERTY_MANAGER_H
 #define PROPERTY_MANAGER_H
 
+#include "UserManager.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -8,13 +9,14 @@
 #include "sqlite3.h"
 #include <windows.h>
 #include <conio.h>
-#include "UserManager.h"
 #include "DBManager.h"
 
 using namespace std;
 
-struct Property
-{
+extern bool isLoggedIn;
+extern string currentUserEmail;
+
+struct Property {
     int id;
     string name;
     string location;
@@ -26,7 +28,6 @@ struct Property
     int noOfBaths;
     double area;
 };
-
 void setAttr(int i)
 {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), i);
@@ -122,9 +123,8 @@ private:
                 else if (key == 80)
                     selected = (selected == props.size() - 1) ? 0 : selected + 1;
             }
-            else if (key == 13)
-            {
-                showDetails(props[selected], db);
+            else if (key == 13) {
+                showDetails(props[selected],db);
                 system("cls");
                 drawTableFrame();
             }
@@ -135,10 +135,6 @@ private:
         }
     }
 
-
-
-
-    // ================= PROPERTY DETAILS =================
     void showDetails(Property p, sqlite3* db, DBManager* dbMgr = nullptr)
     {
         bool showHidden = false;
@@ -205,8 +201,8 @@ private:
 
             setXY(27, 17);
             setAttr(14);
-            if (!UserManager::currentUser.isLoggedIn)
-            {
+
+            if (!isLoggedIn) {
                 cout << "Guest Mode: Login to unlock contact info.";
 
                 string options[] = {"1. Go Back", "2. Login", "3. Exit System"};
@@ -229,7 +225,7 @@ private:
             {
                 // Logged in UI
                 setAttr(10);
-                cout << "User: " << UserManager::currentUser.email;
+                cout << "User: " << currentUserEmail;
                 setXY(30, 20);
                 if (showHidden)
                 {
@@ -259,15 +255,15 @@ private:
                 if (key == 72) selectedOption = (selectedOption == 0) ? 2 : selectedOption - 1; // Up
                 if (key == 80) selectedOption = (selectedOption == 2) ? 0 : selectedOption + 1; // Down
             }
-            else if (key == 13)   // Enter
-            {
-                if (!UserManager::currentUser.isLoggedIn)
-                {
+
+            else if (key == 13) { // Enter
+                if (!isLoggedIn) {
                     if (selectedOption == 0) return;
-                    if (selectedOption == 1)
-                    {
-                        UserManager um;
-                        if (dbMgr && um.login(dbMgr)) continue; // Refresh after login
+                    if (selectedOption == 1) {
+                         UserManager um;
+                        bool success = um.login(db);
+                        if (success) continue;
+                        else _getch();
                     }
                     if (selectedOption == 2) exit(0);
                 }

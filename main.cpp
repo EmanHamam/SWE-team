@@ -7,20 +7,17 @@
 #include "UserManager.h"
 #include "DBManager.h"
 #include "FilterationManager.h"
+#include "AdminManager.h"
+#include "ConsoleUtils.h"
 using namespace std;
 
-void textattr(int i)
-{
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), i);
-}
+bool isLoggedIn = false;
+int currentUserId = -1;
+string currentUserEmail = "";
+bool isAdmin = false;
 
-void gotoxy(int x, int y)
-{
-    COORD coord;
-    coord.X = x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
+/* ================= HEADER ================= */
+
 void drawHeader() {
     textattr(14);
     gotoxy(15, 1); cout << "  _____  ______          _        ______  _____ _______       _______ ______ ";
@@ -33,40 +30,77 @@ void drawHeader() {
     textattr(11);
     gotoxy(35, 8); cout << "--- PROPERTY MANAGEMENT SYSTEM ---";
 }
+
+/* ================= MENU ================= */
+
 void drawMenu(int selected, bool firstDraw)
 {
-    // Only clear the full screen and draw header on the first entry
-    // or after returning from another screen.
     if (firstDraw) {
         system("cls");
         drawHeader();
     }
 
-    const char* menu[] = {
+    const char* menuGuest[] = {
         "View Properties",
         "Login",
+        "Signup",
         "Search Properties",
         "Exit"
     };
 
+    const char* menuUser[] = {
+        "View Properties",
+        "Logout",
+        "Search Properties",
+        "Exit"
+    };
+
+    const char* menuAdmin[] = {
+        "Add Property",
+        "Delete Property",
+        "Update Property",
+        "Lock/Unlock Property",
+        "View All Properties",
+        "View Properties By Owner Id",
+        "Logout"
+    };
+
+    const char** menu;
+    int numOptions;
+
+    if (isLoggedIn && isAdmin) {
+        menu = menuAdmin;
+        numOptions = 7;
+    }
+    else if (isLoggedIn) {
+        menu = menuUser;
+        numOptions = 4;
+    }
+    else {
+        menu = menuGuest;
+        numOptions = 5;
+    }
+
     int y = 12;
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < numOptions; i++)
     {
         gotoxy(38, y + i * 2);
 
         if (i == selected)
         {
-            textattr(240); // Highlight: Black text on White background
-            cout << "> " << menu[i] << "  "; // Extra spaces to clear old chars
+            textattr(240);
+            cout << "> " << menu[i] << "  ";
         }
         else
         {
-            textattr(15); // Normal: White text on Black background
+            textattr(15);
             cout << "  " << menu[i] << "  ";
         }
     }
     textattr(15);
 }
+
+/* ================= ACTIONS ================= */
 
 bool executeMenuAction(int choice, sqlite3* db, DBManager* dbManager)
 {
@@ -74,48 +108,65 @@ bool executeMenuAction(int choice, sqlite3* db, DBManager* dbManager)
     PropertyManager pm;
     UserManager um;
     SearchManager sm(dbManager);
+    AdminManager am;
 
-
-    switch (choice)
+    if (!isLoggedIn)
     {
-    case 0:{
 
-        pm.ViewAllProperies( db, dbManager);
-        break;
-    }
-
-    case 1:
-
-        if (um.login(dbManager)) {
-            textattr(10); cout << "\nLogin Successful!";
+        switch (choice)
+        {
+        case 0: pm.ViewAllProperies(db,dbManager); break;
+        case 1: // Login
+            if (um.login(db))
+            {
+                isLoggedIn = true;
+                if (currentUserEmail == "admin@system.com") isAdmin = true;
+            }
+            break;
+        case 2: um.signup(db); break;
+        case 3: sm.interactiveSearch(db); break;
+        case 4: cout << "Exiting system...\n"; return false;
         }
-        break;
-
-    case 2:
-        sm.interactiveSearch(db);
-        break;
-
-    case 3:
-        textattr(12);
-        cout << "Exiting system...\n";
-        return false;
+    }
+    else if (isAdmin)
+    {
+        switch (choice)
+        {
+        case 0: am.addProperty(db); break;
+        case 1: am.deleteProperty(db); break;
+        case 2: am.updateProperty(db); break;
+        case 3: am.lockUnlockProperty(db); break;
+        case 4: pm.ViewAllProperies(db,dbManager); break;
+        case 5: am.viewPropertiesByOwner(db); break;
+        case 6: isLoggedIn = false; isAdmin = false; currentUserId=-1; currentUserEmail=""; cout << "Logged out successfully!"; break;
+        }
+    }
+    else
+    {
+        switch (choice)
+        {
+        case 0: pm.ViewAllProperies(db,dbManager); break;
+        case 1: isLoggedIn = false; currentUserId = -1; currentUserEmail=""; cout << "Logged out successfully!"; break;
+        case 2: sm.interactiveSearch(db); break;
+        case 3: cout << "Exiting system...\n"; return false;
+        }
     }
 
-    if (choice != 3) {
-        textattr(8);
-        cout << "\n\nPress any key to return to main menu...";
-        _getch();
-    }
+    textattr(8);
+    cout << "\n\nPress any key to return to main menu...";
+    _getch();
     return true;
 }
+
+/* ================= MAIN LOOP ================= */
+
 void runMainMenu(sqlite3* db, DBManager* dbManager)
 {
     int selected = 0;
     char key;
     bool running = true;
-    bool needsFullRedraw = true; // Flag to control system("cls")
+    bool needsFullRedraw = true;
 
-    // Hide Cursor
     CONSOLE_CURSOR_INFO cursorInfo;
     GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
     cursorInfo.bVisible = false;
@@ -124,37 +175,35 @@ void runMainMenu(sqlite3* db, DBManager* dbManager)
     while (running)
     {
         drawMenu(selected, needsFullRedraw);
-        needsFullRedraw = false; // After the first draw, don't cls again
+        needsFullRedraw = false;
 
         key = _getch();
+        int maxOption = 0;
 
-        if (key == 72 || key == 'w' || key == 'W') // UP
-        {
-            selected = (selected <= 0) ? 3 : selected - 1;
-        }
-        else if (key == 80 || key == 's' || key == 'S') // DOWN
-        {
-            selected = (selected >= 3) ? 0 : selected + 1;
-        }
-        else if (key == 13) // ENTER
-        {
+        if (!isLoggedIn) maxOption = 4;
+        else if (isAdmin) maxOption = 6;
+        else maxOption = 3;
 
+        if (key == 72 || key == 'w' || key == 'W') selected = (selected <= 0) ? maxOption : selected - 1;
+        else if (key == 80 || key == 's' || key == 'S') selected = (selected >= maxOption) ? 0 : selected + 1;
+        else if (key == 13)
+        {
             running = executeMenuAction(selected, db, dbManager);
+            selected = 0;
             needsFullRedraw = true;
         }
     }
 }
 
+/* ================= MAIN ================= */
 
-int main() {
+int main()
+{
     DBManager dbManager("test.db");
 
-    if (!dbManager.getDB()) {
-        return 0;
-    }
+    if (!dbManager.getDB()) return 0;
 
     dbManager.initializeDatabase();
-
     runMainMenu(dbManager.getDB(), &dbManager);
 
     return 0;
