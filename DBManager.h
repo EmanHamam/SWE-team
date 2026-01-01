@@ -5,55 +5,68 @@
 #include <string>
 #include <vector>
 #include "sqlite3.h"
+#include "Property.h"
 
-struct User {
+using namespace std;
+
+struct User
+{
     int id;
-    std::string email;
+    string email;
     bool isAdmin;
 };
 
-class DBManager {
+class DBManager
+{
 private:
-    sqlite3* db;
-    char* zErrMsg;
+    sqlite3 *db;
+    char *zErrMsg;
 
 public:
-    DBManager(const std::string& dbName) : db(nullptr), zErrMsg(nullptr) {
+    DBManager(const string &dbName) : db(nullptr), zErrMsg(nullptr)
+    {
         int rc = sqlite3_open(dbName.c_str(), &db);
-        if (rc) {
-            std::cerr << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
+        if (rc)
+        {
+            cerr << "Can't open database: " << sqlite3_errmsg(db) << endl;
             db = nullptr;
         }
     }
 
-    ~DBManager() {
-        if (db) {
+    ~DBManager()
+    {
+        if (db)
+        {
             sqlite3_close(db);
         }
     }
 
-    sqlite3* getDB() const {
+    sqlite3 *getDB() const
+    {
         return db;
     }
 
-    bool executeQuery(const std::string& sql,
-        int (*callback)(void*, int, char**, char**) = nullptr,
-        void* data = nullptr) {
+    bool executeQuery(const string &sql,
+                      int (*callback)(void *, int, char **, char **) = nullptr,
+                      void *data = nullptr)
+    {
 
-        if (!db) return false;
+        if (!db)
+            return false;
 
         int rc = sqlite3_exec(db, sql.c_str(), callback, data, &zErrMsg);
-        if (rc != SQLITE_OK) {
-            std::cerr << "SQL error: " << zErrMsg << std::endl;
+        if (rc != SQLITE_OK)
+        {
+            cerr << "SQL error: " << zErrMsg << endl;
             sqlite3_free(zErrMsg);
             return false;
         }
         return true;
     }
 
-
-void initializeDatabase() {
-        std::string sql =
+    void initializeDatabase()
+    {
+        string sql =
             "CREATE TABLE IF NOT EXISTS owners ("
             "owner_id INTEGER PRIMARY KEY AUTOINCREMENT, "
             "name TEXT NOT NULL);"
@@ -116,31 +129,34 @@ void initializeDatabase() {
         migrateAddRoomsBathsAndArea();
     }
 
-
     // ---------------- MIGRATION ----------------
-    void migrateAddRoomsBathsAndArea() {
+    void migrateAddRoomsBathsAndArea()
+    {
         executeQuery("ALTER TABLE properties ADD COLUMN NoOfRooms INTEGER DEFAULT 0;");
         executeQuery("ALTER TABLE properties ADD COLUMN NoOfBaths INTEGER DEFAULT 0;");
         executeQuery("ALTER TABLE properties ADD COLUMN Area REAL DEFAULT 0;");
     }
 
     // ---------------- AUTHENTICATION ----------------
-    bool validateUser(const std::string& email,
-                      const std::string& password,
-                      int& userId,
-                      bool& isAdmin) {
+    bool validateUser(const string &email,
+                      const string &password,
+                      int &userId,
+                      bool &isAdmin)
+    {
 
-        std::string sql =
+        string sql =
             "SELECT id, isAdmin FROM users WHERE email = ? AND password = ?;";
 
-        sqlite3_stmt* stmt;
+        sqlite3_stmt *stmt;
         bool success = false;
 
-        if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK) {
+        if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK)
+        {
             sqlite3_bind_text(stmt, 1, email.c_str(), -1, SQLITE_STATIC);
             sqlite3_bind_text(stmt, 2, password.c_str(), -1, SQLITE_STATIC);
 
-            if (sqlite3_step(stmt) == SQLITE_ROW) {
+            if (sqlite3_step(stmt) == SQLITE_ROW)
+            {
                 userId = sqlite3_column_int(stmt, 0);
                 isAdmin = sqlite3_column_int(stmt, 1) != 0;
                 success = true;
@@ -150,24 +166,27 @@ void initializeDatabase() {
         return success;
     }
 
-    bool authenticate(const std::string& email,
-                      const std::string& password,
-                      User& user) {
+    bool authenticate(const string &email,
+                      const string &password,
+                      User &user)
+    {
 
-        if (!db) return false;
+        if (!db)
+            return false;
 
-
-        std::string sql = "SELECT id, email, isAdmin FROM users WHERE email = ? AND password = ?;";
-        sqlite3_stmt* stmt;
+        string sql = "SELECT id, email, isAdmin FROM users WHERE email = ? AND password = ?;";
+        sqlite3_stmt *stmt;
         bool success = false;
 
-        if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK) {
+        if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK)
+        {
             sqlite3_bind_text(stmt, 1, email.c_str(), -1, SQLITE_STATIC);
             sqlite3_bind_text(stmt, 2, password.c_str(), -1, SQLITE_STATIC);
 
-            if (sqlite3_step(stmt) == SQLITE_ROW) {
+            if (sqlite3_step(stmt) == SQLITE_ROW)
+            {
                 user.id = sqlite3_column_int(stmt, 0);
-                user.email = (const char*)sqlite3_column_text(stmt, 1);
+                user.email = (const char *)sqlite3_column_text(stmt, 1);
                 user.isAdmin = sqlite3_column_int(stmt, 2) != 0;
                 success = true;
             }
@@ -177,30 +196,35 @@ void initializeDatabase() {
     }
 
     // ---------------- SEARCH PROPERTIES ----------------
-    std::vector<std::vector<std::string>>
-    searchPropertiesByName(const std::string& searchTerm) {
+    vector<vector<string>>
+    searchPropertiesByName(const string &searchTerm)
+    {
 
-        std::vector<std::vector<std::string>> results;
-        if (!db) return results;
+        vector<vector<string>> results;
+        if (!db)
+            return results;
 
-        std::string sql =
+        string sql =
             "SELECT id, name, location, price, type, isAvailable, "
             "InfoNumber, NoOfRooms, NoOfBaths, Area "
             "FROM properties WHERE name LIKE ? OR location LIKE ?;";
 
-        sqlite3_stmt* stmt;
+        sqlite3_stmt *stmt;
 
-        if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK) {
+        if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK)
+        {
 
-            std::string pattern = "%" + searchTerm + "%";
+            string pattern = "%" + searchTerm + "%";
             sqlite3_bind_text(stmt, 1, pattern.c_str(), -1, SQLITE_TRANSIENT);
             sqlite3_bind_text(stmt, 2, pattern.c_str(), -1, SQLITE_TRANSIENT);
 
-            while (sqlite3_step(stmt) == SQLITE_ROW) {
-                std::vector<std::string> row;
-                for (int i = 0; i < 10; i++) {  // 10 columns now
-                    const char* text =
-                        (const char*)sqlite3_column_text(stmt, i);
+            while (sqlite3_step(stmt) == SQLITE_ROW)
+            {
+                vector<string> row;
+                for (int i = 0; i < 10; i++)
+                { // 10 columns now
+                    const char *text =
+                        (const char *)sqlite3_column_text(stmt, i);
                     row.push_back(text ? text : "");
                 }
                 results.push_back(row);
@@ -211,14 +235,16 @@ void initializeDatabase() {
     }
 
     // ---------------- VIEW ALL PROPERTIES ----------------
-    sqlite3_stmt* getAllPropertiesStatement() {
-        if (!db) return nullptr;
+    sqlite3_stmt *getAllPropertiesStatement()
+    {
+        if (!db)
+            return nullptr;
 
-        std::string sql =
+        string sql =
             "SELECT id, name, location, price, type, isAvailable, "
             "InfoNumber, NoOfRooms, NoOfBaths, Area FROM properties;";
 
-        sqlite3_stmt* stmt;
+        sqlite3_stmt *stmt;
         if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK)
             return stmt;
 
@@ -226,31 +252,135 @@ void initializeDatabase() {
     }
 
     // ---------------- VIEW SINGLE PROPERTY ----------------
-    std::vector<std::string> viewSingleProperty(int propertyId) {
+    vector<string> viewSingleProperty(int propertyId)
+    {
 
-        std::vector<std::string> result;
-        if (!db) return result;
+        vector<string> result;
+        if (!db)
+            return result;
 
-        std::string sql =
+        string sql =
             "SELECT id, name, location, price, type, isAvailable, "
             "InfoNumber, NoOfRooms, NoOfBaths, Area "
             "FROM properties WHERE id = ?;";
 
-        sqlite3_stmt* stmt;
+        sqlite3_stmt *stmt;
 
-        if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK) {
+        if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK)
+        {
             sqlite3_bind_int(stmt, 1, propertyId);
 
-            if (sqlite3_step(stmt) == SQLITE_ROW) {
-                for (int i = 0; i < 10; i++) {  // 10 columns
-                    const char* text =
-                        (const char*)sqlite3_column_text(stmt, i);
+            if (sqlite3_step(stmt) == SQLITE_ROW)
+            {
+                for (int i = 0; i < 10; i++)
+                { // 10 columns
+                    const char *text =
+                        (const char *)sqlite3_column_text(stmt, i);
                     result.push_back(text ? text : "");
                 }
             }
         }
         sqlite3_finalize(stmt);
         return result;
+    }
+
+    // ---------------- GET ALL PROPERTIES ----------------
+    vector<Property> getAllProperties()
+    {
+        vector<Property> list;
+        if (!db)
+            return list;
+
+        string sql =
+            "SELECT id, name, location, price, type, isAvailable, "
+            "InfoNumber, NoOfRooms, NoOfBaths, Area FROM properties Limit 10;";
+
+        sqlite3_stmt *stmt;
+        if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(stmt) == SQLITE_ROW)
+            {
+                Property p;
+                p.id = sqlite3_column_int(stmt, 0);
+                p.name = (const char *)sqlite3_column_text(stmt, 1);
+                p.location = (const char *)sqlite3_column_text(stmt, 2);
+                p.price = sqlite3_column_double(stmt, 3);
+                p.type = (const char *)sqlite3_column_text(stmt, 4);
+                p.available = sqlite3_column_int(stmt, 5);
+                p.infoNumber = (const char *)sqlite3_column_text(stmt, 6);
+                p.noOfRooms = sqlite3_column_int(stmt, 7);
+                p.noOfBaths = sqlite3_column_int(stmt, 8);
+                p.area = sqlite3_column_double(stmt, 9);
+                list.push_back(p);
+            }
+        }
+        sqlite3_finalize(stmt);
+        return list;
+    }
+
+    // ---------------- FILTER PROPERTIES ----------------
+    vector<Property> filterProperties(double maxPrice, const string &type, const string &location, int minRooms, int minBaths, double minArea)
+    {
+        vector<Property> list;
+        if (!db)
+            return list;
+
+        string sql =
+            "SELECT id, name, location, price, type, isAvailable, "
+            "InfoNumber, NoOfRooms, NoOfBaths, Area FROM properties WHERE 1=1";
+
+        if (maxPrice < 999999999)
+            sql += " AND price <= ?";
+        if (!type.empty())
+            sql += " AND type = ?";
+        if (!location.empty())
+            sql += " AND LOWER(location) LIKE ?";
+        if (minRooms > 0)
+            sql += " AND NoOfRooms >= ?";
+        if (minBaths > 0)
+            sql += " AND NoOfBaths >= ?";
+        if (minArea > 0)
+            sql += " AND Area >= ?";
+        sql += " LIMIT 10";
+
+        sqlite3_stmt *stmt;
+        if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK)
+        {
+            int paramIndex = 1;
+            if (maxPrice < 999999999)
+                sqlite3_bind_double(stmt, paramIndex++, maxPrice);
+            if (!type.empty())
+                sqlite3_bind_text(stmt, paramIndex++, type.c_str(), -1, SQLITE_STATIC);
+            if (!location.empty())
+            {
+                string pattern = "%" + location + "%";
+                sqlite3_bind_text(stmt, paramIndex++, pattern.c_str(), -1, SQLITE_TRANSIENT);
+            }
+            if (minRooms > 0)
+                sqlite3_bind_int(stmt, paramIndex++, minRooms);
+            if (minBaths > 0)
+                sqlite3_bind_int(stmt, paramIndex++, minBaths);
+            if (minArea > 0)
+                sqlite3_bind_double(stmt, paramIndex++, minArea);
+
+            while (sqlite3_step(stmt) == SQLITE_ROW)
+            {
+                Property p;
+                p.id = sqlite3_column_int(stmt, 0);
+                p.name = (const char *)sqlite3_column_text(stmt, 1);
+                p.location = (const char *)sqlite3_column_text(stmt, 2);
+                p.price = sqlite3_column_double(stmt, 3);
+                p.type = (const char *)sqlite3_column_text(stmt, 4);
+                p.available = sqlite3_column_int(stmt, 5);
+                p.infoNumber = (const char *)sqlite3_column_text(stmt, 6);
+                p.noOfRooms = sqlite3_column_int(stmt, 7);
+                p.noOfBaths = sqlite3_column_int(stmt, 8);
+                p.area = sqlite3_column_double(stmt, 9);
+                list.push_back(p);
+            }
+        }
+        sqlite3_finalize(stmt);
+        return list;
     }
 };
 
