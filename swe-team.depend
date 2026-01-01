@@ -874,3 +874,147 @@
 
 1767268771 n
 
+1767268767 source:d:\swe pro\swe-team\sqlite3.c
+	<vxWorks.h>
+	<pthread.h>
+	"mingw.h"
+	"_mingw.h"
+	<stdarg.h>
+	"sqlite_cfg.h"
+	<stdint.h>
+	<inttypes.h>
+	<intrin.h>
+	<cmnintrin.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<stddef.h>
+	<ctype.h>
+	<TargetConditionals.h>
+	<time.h>
+	<sys/sysctl.h>
+	<malloc/malloc.h>
+	<libkern/OSAtomic.h>
+	<malloc.h>
+	<pthread.h>
+	"windows.h"
+	<sys/cygwin.h>
+	<sys/stat.h>
+	<unistd.h>
+	<errno.h>
+	<process.h>
+	<math.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<unistd.h>
+	<sys/time.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<sys/ioctl.h>
+	<unistd.h>
+	<sys/time.h>
+	<errno.h>
+	<sys/mman.h>
+	<sys/file.h>
+	<sys/param.h>
+	<semaphore.h>
+	<limits.h>
+	<sys/mount.h>
+	<utime.h>
+	<sys/dcmd_blk.h>
+	<sys/statvfs.h>
+	<dlfcn.h>
+	<Windows.h>
+	"tclsqlite.h"
+	"sqlite3rtree.h"
+	<ctype.h>
+	<unicode/utypes.h>
+	<unicode/uregex.h>
+	<unicode/ustring.h>
+	<unicode/ucol.h>
+	<unicode/ubrk.h>
+	<unicode/utf16.h>
+	<sys/uio.h>
+	<math.h>
+
+1767290971 source:d:\swe pro\swe-team\usermanager.cpp
+	"UserManager.h"
+	<iostream>
+	<conio.h>
+	<windows.h>
+	<cstring>
+	"ConsoleUtils.h"
+	<regex>
+
+1767268767 d:\swe pro\swe-team\usermanager.h
+	"sqlite3.h"
+
+1767268767 d:\swe pro\swe-team\sqlite3.h
+	<stdarg.h>
+
+1767268767 d:\swe pro\swe-team\consoleutils.h
+	<windows.h>
+	<iostream>
+
+1767290069 source:d:\swe pro\swe-team\main.cpp
+	<iostream>
+	"sqlite3.h"
+	<string>
+	<windows.h>
+	<conio.h>
+	"PropertyManager.h"
+	"UserManager.h"
+	"DBManager.h"
+	"FilterationManager.h"
+	"AdminManager.h"
+	"ConsoleUtils.h"
+
+1767290069 d:\swe pro\swe-team\propertymanager.h
+	"UserManager.h"
+	<iostream>
+	<vector>
+	<string>
+	<iomanip>
+	"sqlite3.h"
+	<windows.h>
+	<conio.h>
+	"DBManager.h"
+	"Property.h"
+
+1767290069 d:\swe pro\swe-team\dbmanager.h
+	<iostream>
+	<string>
+	<vector>
+	"sqlite3.h"
+	"Property.h"
+
+1767268767 d:\swe pro\swe-team\property.h
+	<string>
+
+1767290069 d:\swe pro\swe-team\filterationmanager.h
+	<iostream>
+	<vector>
+	<string>
+	<sstream>
+	<iomanip>
+	<algorithm>
+	<windows.h>
+	<conio.h>
+	"sqlite3.h"
+	"DBManager.h"
+	"PropertyManager.h"
+
+1767290069 d:\swe pro\swe-team\adminmanager.h
+	"DBManager.h"
+	"Property.h"
+	"sqlite3.h"
+	<iostream>
+	<string>
+	<iomanip>
+	<conio.h>
+	<windows.h>
+	<cstdlib>
+	"ConsoleUtils.h"
+
