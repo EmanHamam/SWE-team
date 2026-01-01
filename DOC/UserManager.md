@@ -261,18 +261,3 @@ User selects Sign Up
 | `PropertyManager.h` | Uses login status to control contact info visibility |
 | `DBManager.h` | Database contains `users` table |
 | `sqlite3.h` | Direct SQL queries for authentication |
-
-## Security Considerations
-
-⚠️ **Current Implementation Issues**:
-1. **Plain Text Passwords**: Passwords stored without hashing
-2. **SQL Injection**: Uses prepared statements (✓ Good)
-3. **No Rate Limiting**: Unlimited login attempts allowed
-4. **No Session Management**: Basic boolean flag only
-
-**Recommendations for Production**:
-- Implement password hashing (bcrypt, argon2)
-- Add rate limiting for failed attempts
-- Use session tokens instead of global variables
-- Add 2FA support
-- Log authentication attempts
