@@ -67,11 +67,10 @@ public:
                 setXY(52, rowY);
                 cout << "$" << fixed << setprecision(2) << props[i].price;
                 setXY(68, rowY);
-                cout << props[i].noOfRooms;
+                cout << props[i].type;
                 setXY(80, rowY);
-                cout << props[i].noOfBaths;
-                setXY(88, rowY);
-                cout << props[i].area << " m";
+                cout << props[i].area<< " m";
+
             }
 
             setAttr(8);
@@ -143,32 +142,18 @@ private:
 
             setAttr(15);
             setXY(30, 7);
-            cout << "Name:           " << p.name;
+            cout << "Name:            " << p.name;
             setXY(30, 8);
-            cout << "Location:       " << p.location;
+            cout << "Location:        " << p.location;
             setXY(30, 9);
-            cout << "No Of Rooms     " << p.noOfRooms;
+            cout << "No Of Rooms      " << p.noOfRooms;
             setXY(30, 10);
             cout << "No Of BathRooms  " << p.noOfBaths;
             setXY(30, 11);
-            cout << "Area            " << p.area;
+            cout << "Area             " << p.area <<"m";
 
 
-            setAttr(11); // Specs
-            setXY(30, 10);
-            cout << "Rooms: ";
-            setAttr(15);
-            cout << p.noOfRooms;
-            setAttr(11);
-            setXY(45, 10);
-            cout << "Baths: ";
-            setAttr(15);
-            cout << p.noOfBaths;
-            setAttr(11);
-            setXY(30, 11);
-            cout << "Area:  ";
-            setAttr(15);
-            cout << p.area << " sqft";
+
 
 
             if (p.type == "Rent")
@@ -176,20 +161,20 @@ private:
                 double pricePerDay = p.price;
                 double pricePerMonth = p.price * 30 * 0.8;
 
+                setXY(30, 12);
+                cout << "Price/Day:       $" << fixed << setprecision(2) << pricePerDay;
                 setXY(30, 13);
-                cout << "Price/Day:      $" << fixed << setprecision(2) << pricePerDay;
-                setXY(30, 14);
-                cout << "Price/Month:    $" << pricePerMonth << " (20% Disc!)";
+                cout << "Price/Month:     $" << pricePerMonth << " (20% Disc!)";
             }
             else
             {
 
                 setXY(30, 13);
-                cout << "Purchase Price: $" << fixed << setprecision(2) << p.price;
+                cout << "Purchase Price:  $" << fixed << setprecision(2) << p.price;
             }
 
-            setXY(30, 16);
-            cout << "Availability:   ";
+            setXY(30, 15);
+            cout << "Availability:    ";
             if (!p.available)
             {
                 setAttr(12);
@@ -198,12 +183,12 @@ private:
             else
             {
                 setAttr(10);
-                cout << "AVAILABLE FOR " << (p.type == "Rent" ? "LEASING" : "SALE");
+                cout << "AVAILABLE FOR " << (p.type == "Rent" ? "LEASING" : "SELL");
             }
 
             setAttr(15);
             setXY(30, 18);
-            cout << "Contact:        " << (showHidden ? p.infoNumber : "******** (Unlock Below)");
+            cout << "Contact:         " << (showHidden ? p.infoNumber : "******** (Unlock Below)");
 
             setXY(27, 20);
             setAttr(14);
@@ -289,7 +274,7 @@ private:
         cout << "========= PROPERTY INVENTORY =========";
         setAttr(240);
         setXY(4, 6);
-        cout << " ID | NAME              | LOCATION        | PRICE        | ROOMS NO    | BATHS NO    | AREA     ";
+        cout << " ID | NAME              | LOCATION          | PRICE          | Type        | AREA     ";
         setAttr(15);
     }
 };

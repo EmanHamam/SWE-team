@@ -100,7 +100,7 @@ public:
             "(5, 'Abdutalib'),"
             "(6, 'Omar Alsayeed'),"
             "(7, 'Mohamed Dawood');"
-               
+
             // Insert properties with owner_id
             "INSERT OR IGNORE INTO properties (name, location, price, type, isAvailable, InfoNumber, NoOfRooms, NoOfBaths, Area, owner_id) VALUES "
             "('giza villa', 'giza', 5000.0, 'Buy', 1, '0123456789', 5, 4, 350.0, 1),"
@@ -174,7 +174,7 @@ public:
 
         string sql =
             "SELECT id, name, location, price, type, isAvailable, "
-            "InfoNumber, NoOfRooms, NoOfBaths, Area FROM properties";
+            "InfoNumber, NoOfRooms, NoOfBaths, Area FROM properties where 1=1";
 
         if (maxPrice < 999999999)
             sql += " AND price <= ?";
