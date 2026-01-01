@@ -36,12 +36,10 @@
 		<Unit filename="FilterationManager.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="Helpers.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
 		<Unit filename="PropertyManager.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="UserManager.cpp" />
 		<Unit filename="UserManager.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="sqlite3.c">
@@ -51,9 +49,6 @@
 		<Unit filename="sqlite3ext.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
-			<code_completion />
-			<envvars />
-			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

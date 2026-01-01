@@ -615,7 +615,7 @@
 	<vector>
 	"sqlite3.h"
 
-1767197770 d:\iti_intake46\swe_uml_project\swe-team\filterationmanager.h
+1767226819 d:\iti_intake46\swe_uml_project\swe-team\filterationmanager.h
 	<iostream>
 	<vector>
 	<string>
@@ -624,10 +624,10 @@
 	<algorithm>
 	<windows.h>
 	<conio.h>
+	<limits>
 	"sqlite3.h"
 	"DBManager.h"
 	"PropertyManager.h"
-	"Helpers.h"
 
 1767197770 d:\iti_intake46\swe_uml_project\swe-team\helpers.h
 	<sstream>

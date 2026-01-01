@@ -2,4 +2,5 @@ bin/
 obj/
 swe-team.depend
 swe-team.layout
+swe-team.cbp
 shell.c
