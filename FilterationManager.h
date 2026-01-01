@@ -9,11 +9,16 @@
 #include <algorithm>
 #include <windows.h>
 #include <conio.h>
-#include <limits>
 #include "sqlite3.h"
 #include "DBManager.h"
 #include "PropertyManager.h"
 using namespace std;
+string toLower(string s)
+{
+    transform(s.begin(), s.end(), s.begin(),
+              [](unsigned char c){ return tolower(c); });
+    return s;
+}
 
 struct SearchFilter
 {
@@ -42,12 +47,18 @@ public:
         bool filtering = true;
         int selectedFilter = 0;
         const int numOptions = 9;
+        bool needsClear = true;
 
         while (filtering)
         {
+            if (needsClear)
+        {
             system("cls");
+            needsClear = false;
+        }
             drawFilterMenu(selectedFilter, numOptions);
             displayCurrentFilters();
+
 
             int key = _getch();
             if (key == 0 || key == 224)
@@ -60,13 +71,16 @@ public:
             }
             else if (key == 13)
             {
+
                 if (selectedFilter == 6)
                 {
                     viewFilteredResults(db);
+                    needsClear = true;
                 }
                 else if (selectedFilter == 7)
                 {
                     resetFilters();
+                    needsClear = true;
                 }
                 else if (selectedFilter == 8)
                 {
@@ -81,6 +95,7 @@ public:
                 else
                 {
                     handleFilterInput(selectedFilter);
+                    needsClear = true;
                 }
             }
 
@@ -99,6 +114,7 @@ private:
     // =============== Helpers Function ===============
     void drawFilterMenu(int selected, int numOptions)
     {
+
         setAttr(11);
         setXY(20, 2);
         cout << "====================================================";
@@ -194,9 +210,9 @@ private:
             cout << "Enter Property Type (Rent/Buy or empty): ";
             cin.clear();
             getline(cin, currentFilter.type);
-            if (currentFilter.type == "rent" || currentFilter.type == "RENT")
+            if (toLower(currentFilter.type)=="rent")
                 currentFilter.type = "Rent";
-            else if (currentFilter.type == "buy" || currentFilter.type == "BUY")
+            else if (toLower(currentFilter.type)== "buy" )
                 currentFilter.type = "Buy";
             else if (!currentFilter.type.empty())
                 currentFilter.type = "";
@@ -251,6 +267,8 @@ private:
             setXY(30, 9);
             cout << "Press any key to continue...";
             _getch();
+            system("cls");
+
         }
     }
 

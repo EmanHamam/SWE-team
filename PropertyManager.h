@@ -146,6 +146,13 @@ private:
             cout << "Name:           " << p.name;
             setXY(30, 8);
             cout << "Location:       " << p.location;
+            setXY(30, 9);
+            cout << "No Of Rooms     " << p.noOfRooms;
+            setXY(30, 10);
+            cout << "No Of BathRooms  " << p.noOfBaths;
+            setXY(30, 11);
+            cout << "Area            " << p.area;
+
 
             setAttr(11); // Specs
             setXY(30, 10);
@@ -168,6 +175,7 @@ private:
             {
                 double pricePerDay = p.price;
                 double pricePerMonth = p.price * 30 * 0.8;
+
                 setXY(30, 13);
                 cout << "Price/Day:      $" << fixed << setprecision(2) << pricePerDay;
                 setXY(30, 14);
@@ -175,6 +183,7 @@ private:
             }
             else
             {
+
                 setXY(30, 13);
                 cout << "Purchase Price: $" << fixed << setprecision(2) << p.price;
             }

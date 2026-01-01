@@ -588,7 +588,7 @@
 	<sys/uio.h>
 	<math.h>
 
-1767202634 source:d:\iti_intake46\swe_uml_project\swe-team\main.cpp
+1767271245 source:d:\iti_intake46\swe_uml_project\swe-team\main.cpp
 	<iostream>
 	"sqlite3.h"
 	<string>
@@ -604,7 +604,7 @@
 1767125870 d:\iti_intake46\swe_uml_project\swe-team\sqlite3.h
 	<stdarg.h>
 
-1767205304 d:\iti_intake46\swe_uml_project\swe-team\propertymanager.h
+1767271326 d:\iti_intake46\swe_uml_project\swe-team\propertymanager.h
 	"UserManager.h"
 	<iostream>
 	<vector>
@@ -614,17 +614,19 @@
 	<windows.h>
 	<conio.h>
 	"DBManager.h"
+	"Property.h"
 
 1767197779 d:\iti_intake46\swe_uml_project\swe-team\usermanager.h
 	"sqlite3.h"
 
-1767199008 d:\iti_intake46\swe_uml_project\swe-team\dbmanager.h
+1767235092 d:\iti_intake46\swe_uml_project\swe-team\dbmanager.h
 	<iostream>
 	<string>
 	<vector>
 	"sqlite3.h"
+	"Property.h"
 
-1767226819 d:\iti_intake46\swe_uml_project\swe-team\filterationmanager.h
+1767275596 d:\iti_intake46\swe_uml_project\swe-team\filterationmanager.h
 	<iostream>
 	<vector>
 	<string>
@@ -633,7 +635,6 @@
 	<algorithm>
 	<windows.h>
 	<conio.h>
-	<limits>
 	"sqlite3.h"
 	"DBManager.h"
 	"PropertyManager.h"
@@ -642,7 +643,7 @@
 	<sstream>
 	<string>
 
-1767200713 d:\iti_intake46\swe_uml_project\swe-team\adminmanager.h
+1767271245 d:\iti_intake46\swe_uml_project\swe-team\adminmanager.h
 	"PropertyManager.h"
 	"UserManager.h"
 	"sqlite3.h"
@@ -655,11 +656,11 @@
 	<cstdlib>
 	"ConsoleUtils.h"
 
-1767197779 d:\iti_intake46\swe_uml_project\swe-team\consoleutils.h
+1767271245 d:\iti_intake46\swe_uml_project\swe-team\consoleutils.h
 	<windows.h>
 	<iostream>
 
-1767197779 source:d:\iti_intake46\swe_uml_project\swe-team\usermanager.cpp
+1767271245 source:d:\iti_intake46\swe_uml_project\swe-team\usermanager.cpp
 	"UserManager.h"
 	<iostream>
 	<conio.h>
@@ -799,6 +800,11 @@
 	<sys/uio.h>
 	<math.h>
 
+1767216932 D
+
+1767235092 d:\iti_intake46\swe_uml_project\swe-team\property.h
+	<string>
+
 1767236429 e:\supertryhard\swe\project\swe-team\property.h
 	<string>
 
@@ -865,4 +871,6 @@
 	<cstring>
 	"ConsoleUtils.h"
 	<regex>
+
+1767268771 n
 
