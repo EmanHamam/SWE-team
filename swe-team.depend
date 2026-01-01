@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1767058123 source:d:\ida\softskills\umlproject\swe-team\swe-team\main.cpp
+1767268771 source:d:\ida\softskills\umlproject\swe-team\swe-team\main.cpp
 	<iostream>
 	"sqlite3.h"
 	<string>
@@ -7,11 +7,15 @@
 	<conio.h>
 	"PropertyManager.h"
 	"UserManager.h"
+	"DBManager.h"
+	"FilterationManager.h"
+	"AdminManager.h"
+	"ConsoleUtils.h"
 
-1767037439 d:\ida\softskills\umlproject\swe-team\swe-team\sqlite3.h
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\sqlite3.h
 	<stdarg.h>
 
-1767037439 source:d:\ida\softskills\umlproject\swe-team\swe-team\sqlite3.c
+1767268771 source:d:\ida\softskills\umlproject\swe-team\swe-team\sqlite3.c
 	<vxWorks.h>
 	<pthread.h>
 	"mingw.h"
@@ -76,7 +80,7 @@
 	<sys/uio.h>
 	<math.h>
 
-1767059475 d:\ida\softskills\umlproject\swe-team\swe-team\propertymanager.h
+1767270108 d:\ida\softskills\umlproject\swe-team\swe-team\propertymanager.h
 	"UserManager.h"
 	<iostream>
 	<vector>
@@ -85,10 +89,10 @@
 	"sqlite3.h"
 	<windows.h>
 	<conio.h>
+	"DBManager.h"
+	"Property.h"
 
-1767059479 d:\ida\softskills\umlproject\swe-team\swe-team\usermanager.h
-	<iostream>
-	<string>
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\usermanager.h
 	"sqlite3.h"
 
 1764352243 source:e:\iti\swe-team\swe-team\sqlite3.c
@@ -811,4 +815,54 @@
 	"sqlite3.h"
 	"DBManager.h"
 	"PropertyManager.h"
+
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\dbmanager.h
+	<iostream>
+	<string>
+	<vector>
+	"sqlite3.h"
+	"Property.h"
+
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\property.h
+	<string>
+
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\filterationmanager.h
+	<iostream>
+	<vector>
+	<string>
+	<sstream>
+	<iomanip>
+	<algorithm>
+	<windows.h>
+	<conio.h>
+	<limits>
+	"sqlite3.h"
+	"DBManager.h"
+	"PropertyManager.h"
+
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\adminmanager.h
+	"PropertyManager.h"
+	"UserManager.h"
+	"sqlite3.h"
+	<iostream>
+	<string>
+	<iomanip>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<cstdlib>
+	"ConsoleUtils.h"
+
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\consoleutils.h
+	<windows.h>
+	<iostream>
+
+1767268771 source:d:\ida\softskills\umlproject\swe-team\swe-team\usermanager.cpp
+	"UserManager.h"
+	<iostream>
+	<conio.h>
+	<windows.h>
+	<cstring>
+	"ConsoleUtils.h"
+	<regex>
 
