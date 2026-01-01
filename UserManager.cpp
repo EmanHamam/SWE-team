@@ -118,7 +118,7 @@ bool UserManager::login(sqlite3* db)
     char er[] = { '~', '~' };
 
     // Start editor at positions next to labels
-    char** input = multiLineEditor(startX + 13, startY + 3, 25, sr, er, 2);
+    char** input = multiLineEditor(startX + 13, startY + 3, 25, sr, er, 2,1);
 
     string email = trim(input[0]);
     string password = trim(input[1]);
@@ -194,7 +194,7 @@ bool UserManager::signup(sqlite3* db)
     char sr[] = { ' ', ' ' };
     char er[] = { '~', '~' };
 
-    char** input = multiLineEditor(startX + 13, startY + 3, 25, sr, er, 2);
+    char** input = multiLineEditor(startX + 13, startY + 3, 25, sr, er, 2,1);
 
     string email = trim(input[0]);
     string password = trim(input[1]);
@@ -270,4 +270,3 @@ bool UserManager::signup(sqlite3* db)
     _getch();
     return true;
 }
-

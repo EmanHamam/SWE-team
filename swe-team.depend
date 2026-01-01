@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1767058123 source:d:\ida\softskills\umlproject\swe-team\swe-team\main.cpp
+1767268771 source:d:\ida\softskills\umlproject\swe-team\swe-team\main.cpp
 	<iostream>
 	"sqlite3.h"
 	<string>
@@ -7,11 +7,15 @@
 	<conio.h>
 	"PropertyManager.h"
 	"UserManager.h"
+	"DBManager.h"
+	"FilterationManager.h"
+	"AdminManager.h"
+	"ConsoleUtils.h"
 
-1767037439 d:\ida\softskills\umlproject\swe-team\swe-team\sqlite3.h
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\sqlite3.h
 	<stdarg.h>
 
-1767037439 source:d:\ida\softskills\umlproject\swe-team\swe-team\sqlite3.c
+1767268771 source:d:\ida\softskills\umlproject\swe-team\swe-team\sqlite3.c
 	<vxWorks.h>
 	<pthread.h>
 	"mingw.h"
@@ -76,7 +80,7 @@
 	<sys/uio.h>
 	<math.h>
 
-1767059475 d:\ida\softskills\umlproject\swe-team\swe-team\propertymanager.h
+1767270108 d:\ida\softskills\umlproject\swe-team\swe-team\propertymanager.h
 	"UserManager.h"
 	<iostream>
 	<vector>
@@ -85,10 +89,10 @@
 	"sqlite3.h"
 	<windows.h>
 	<conio.h>
+	"DBManager.h"
+	"Property.h"
 
-1767059479 d:\ida\softskills\umlproject\swe-team\swe-team\usermanager.h
-	<iostream>
-	<string>
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\usermanager.h
 	"sqlite3.h"
 
 1764352243 source:e:\iti\swe-team\swe-team\sqlite3.c
@@ -331,7 +335,7 @@
 	<sys/uio.h>
 	<math.h>
 
-1767157709 source:e:\supertryhard\swe\project\swe-team\main.cpp
+1767236429 source:e:\supertryhard\swe\project\swe-team\main.cpp
 	<iostream>
 	"sqlite3.h"
 	<string>
@@ -340,13 +344,14 @@
 	"PropertyManager.h"
 	"UserManager.h"
 	"DBManager.h"
+	"FilterationManager.h"
 	"AdminManager.h"
 	"ConsoleUtils.h"
 
 1767105066 e:\supertryhard\swe\project\swe-team\sqlite3.h
 	<stdarg.h>
 
-1767151313 e:\supertryhard\swe\project\swe-team\propertymanager.h
+1767236429 e:\supertryhard\swe\project\swe-team\propertymanager.h
 	"UserManager.h"
 	<iostream>
 	<vector>
@@ -355,21 +360,24 @@
 	"sqlite3.h"
 	<windows.h>
 	<conio.h>
+	"DBManager.h"
+	"Property.h"
 
 1767151313 e:\supertryhard\swe\project\swe-team\usermanager.h
 	"sqlite3.h"
 
-1767156108 e:\supertryhard\swe\project\swe-team\dbmanager.h
+1767236429 e:\supertryhard\swe\project\swe-team\dbmanager.h
 	<iostream>
 	<string>
 	<vector>
 	"sqlite3.h"
+	"Property.h"
 
-1767160112 e:\supertryhard\swe\project\swe-team\consoleutils.h
+1767246800 e:\supertryhard\swe\project\swe-team\consoleutils.h
 	<windows.h>
 	<iostream>
 
-1767158987 source:e:\supertryhard\swe\project\swe-team\usermanager.cpp
+1767246800 source:e:\supertryhard\swe\project\swe-team\usermanager.cpp
 	"UserManager.h"
 	<iostream>
 	<conio.h>
@@ -378,7 +386,7 @@
 	"ConsoleUtils.h"
 	<regex>
 
-1767160229 e:\supertryhard\swe\project\swe-team\adminmanager.h
+1767246989 e:\supertryhard\swe\project\swe-team\adminmanager.h
 	"PropertyManager.h"
 	"UserManager.h"
 	"sqlite3.h"
@@ -388,6 +396,7 @@
 	<conio.h>
 	<windows.h>
 	<iostream>
+	<cstdlib>
 	"ConsoleUtils.h"
 
 1767191871 source:d:\iti\swe\swe-team\swe-team\main.cpp
@@ -579,7 +588,7 @@
 	<sys/uio.h>
 	<math.h>
 
-1767228167 source:d:\iti_intake46\swe_uml_project\swe-team\main.cpp
+1767271245 source:d:\iti_intake46\swe_uml_project\swe-team\main.cpp
 	<iostream>
 	"sqlite3.h"
 	<string>
@@ -595,7 +604,7 @@
 1767125870 d:\iti_intake46\swe_uml_project\swe-team\sqlite3.h
 	<stdarg.h>
 
-1767236276 d:\iti_intake46\swe_uml_project\swe-team\propertymanager.h
+1767271326 d:\iti_intake46\swe_uml_project\swe-team\propertymanager.h
 	"UserManager.h"
 	<iostream>
 	<vector>
@@ -617,7 +626,7 @@
 	"sqlite3.h"
 	"Property.h"
 
-1767235092 d:\iti_intake46\swe_uml_project\swe-team\filterationmanager.h
+1767272921 d:\iti_intake46\swe_uml_project\swe-team\filterationmanager.h
 	<iostream>
 	<vector>
 	<string>
@@ -626,7 +635,6 @@
 	<algorithm>
 	<windows.h>
 	<conio.h>
-	<limits>
 	"sqlite3.h"
 	"DBManager.h"
 	"PropertyManager.h"
@@ -635,7 +643,7 @@
 	<sstream>
 	<string>
 
-1767227536 d:\iti_intake46\swe_uml_project\swe-team\adminmanager.h
+1767271245 d:\iti_intake46\swe_uml_project\swe-team\adminmanager.h
 	"PropertyManager.h"
 	"UserManager.h"
 	"sqlite3.h"
@@ -648,11 +656,11 @@
 	<cstdlib>
 	"ConsoleUtils.h"
 
-1767197779 d:\iti_intake46\swe_uml_project\swe-team\consoleutils.h
+1767271245 d:\iti_intake46\swe_uml_project\swe-team\consoleutils.h
 	<windows.h>
 	<iostream>
 
-1767197779 source:d:\iti_intake46\swe_uml_project\swe-team\usermanager.cpp
+1767271245 source:d:\iti_intake46\swe_uml_project\swe-team\usermanager.cpp
 	"UserManager.h"
 	<iostream>
 	<conio.h>
@@ -792,6 +800,77 @@
 	<sys/uio.h>
 	<math.h>
 
+1767216932 D
+
 1767235092 d:\iti_intake46\swe_uml_project\swe-team\property.h
 	<string>
+
+1767236429 e:\supertryhard\swe\project\swe-team\property.h
+	<string>
+
+1767236429 e:\supertryhard\swe\project\swe-team\filterationmanager.h
+	<iostream>
+	<vector>
+	<string>
+	<sstream>
+	<iomanip>
+	<algorithm>
+	<windows.h>
+	<conio.h>
+	<limits>
+	"sqlite3.h"
+	"DBManager.h"
+	"PropertyManager.h"
+
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\dbmanager.h
+	<iostream>
+	<string>
+	<vector>
+	"sqlite3.h"
+	"Property.h"
+
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\property.h
+	<string>
+
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\filterationmanager.h
+	<iostream>
+	<vector>
+	<string>
+	<sstream>
+	<iomanip>
+	<algorithm>
+	<windows.h>
+	<conio.h>
+	<limits>
+	"sqlite3.h"
+	"DBManager.h"
+	"PropertyManager.h"
+
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\adminmanager.h
+	"PropertyManager.h"
+	"UserManager.h"
+	"sqlite3.h"
+	<iostream>
+	<string>
+	<iomanip>
+	<conio.h>
+	<windows.h>
+	<iostream>
+	<cstdlib>
+	"ConsoleUtils.h"
+
+1767268771 d:\ida\softskills\umlproject\swe-team\swe-team\consoleutils.h
+	<windows.h>
+	<iostream>
+
+1767268771 source:d:\ida\softskills\umlproject\swe-team\swe-team\usermanager.cpp
+	"UserManager.h"
+	<iostream>
+	<conio.h>
+	<windows.h>
+	<cstring>
+	"ConsoleUtils.h"
+	<regex>
+
+1767268771 n
 
