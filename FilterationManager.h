@@ -9,10 +9,12 @@
 #include <algorithm>
 #include <windows.h>
 #include <conio.h>
+#include <limits>
 #include "sqlite3.h"
 #include "DBManager.h"
 #include "PropertyManager.h"
 using namespace std;
+
 
 
 
@@ -131,9 +133,9 @@ private:
         setXY(x, y += 2); cout << "Max Price:   $" << fixed << setprecision(2) << currentFilter.maxPrice;
         setXY(x, ++y); cout << "Type:        " << (currentFilter.type.empty() ? "Any" : currentFilter.type);
         setXY(x, ++y); cout << "Location:    " << (currentFilter.location.empty() ? "Any" : currentFilter.location);
-        setXY(x, ++y); cout << "Rooms >=     " << currentFilter.minRooms;
-        setXY(x, ++y); cout << "Bathrooms >= " << currentFilter.minBaths;
-        setXY(x, ++y); cout << "Area >=      " << fixed << setprecision(0) << currentFilter.minArea << " m";
+        setXY(x, ++y); cout << "Rooms        " << currentFilter.minRooms;
+        setXY(x, ++y); cout << "Bathrooms    " << currentFilter.minBaths;
+        setXY(x, ++y); cout << "Area         " << fixed << setprecision(0) << currentFilter.minArea << " m";
 
         setAttr(15);
     }
@@ -154,7 +156,7 @@ private:
         case 1:
             cout << "Enter Property Type (Rent/Buy or empty): ";
             cin.ignore();
-            getline(cin, currentFilter.type);
+            getline(cin,currentFilter.type);
             if (currentFilter.type == "rent" || currentFilter.type == "RENT") currentFilter.type = "Rent";
             else if (currentFilter.type == "buy" || currentFilter.type == "BUY") currentFilter.type = "Buy";
             else if (!currentFilter.type.empty()) currentFilter.type = "";
@@ -162,7 +164,7 @@ private:
 
         case 2:
             cout << "Enter Location (partial match): ";
-            cin.ignore();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             getline(cin, currentFilter.location);
             break;
 
@@ -224,13 +226,11 @@ private:
         return sql;
     }
 
-    // ================= VIEW FILTERED RESULTS =================
     void viewFilteredResults(sqlite3* db) {
         string sql = buildFilterQuery();
         pm.AbstractView(sql, db, dbManager);
     }
 
-    // ================= RESET FILTERS =================
     void resetFilters() {
         currentFilter = SearchFilter();
         system("cls");
