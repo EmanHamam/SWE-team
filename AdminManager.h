@@ -211,17 +211,17 @@ public:
     }
 
     // ================= DELETE PROPERTY =================
-    void deleteProperty(sqlite3* db) {
+     void deleteProperty(sqlite3* db) {
         system("cls");
 
         // Show all properties in a table format
         textattr(11);
         cout << "====== ALL PROPERTIES ======\n\n";
         textattr(240);
-        cout << " ID  | NAME              | LOCATION        | PRICE       | TYPE  | ROOMS | BATHS | AREA    | OWNER ID\n";
+        cout << " ID    | NAME                | LOCATION          | PRICE              | TYPE      | AVAILABLE\n";
         textattr(15);
 
-        string listSql = "SELECT id, name, location, price, type, NoOfRooms, NoOfBaths, Area, owner_id FROM properties;";
+        string listSql = "SELECT id, name, location, price, type, isAvailable FROM properties;";
         sqlite3_stmt* listStmt;
         vector<int> propertyIds;
 
@@ -232,22 +232,16 @@ public:
                 string location = (const char*)sqlite3_column_text(listStmt, 2);
                 double price = sqlite3_column_double(listStmt, 3);
                 string type = (const char*)sqlite3_column_text(listStmt, 4);
-                int rooms = sqlite3_column_int(listStmt, 5);
-                int baths = sqlite3_column_int(listStmt, 6);
-                double area = sqlite3_column_double(listStmt, 7);
-                int ownerId = sqlite3_column_int(listStmt, 8);
+                int available = sqlite3_column_int(listStmt, 5);
 
                 propertyIds.push_back(id);
 
-                cout << setw(4) << id << " | ";
-                cout << setw(17) << name.substr(0, 17) << " | ";
-                cout << setw(15) << location.substr(0, 15) << " | ";
-                cout << "$" << setw(10) << fixed << setprecision(0) << price << " | ";
-                cout << setw(5) << type << " | ";
-                cout << setw(5) << rooms << " | ";
-                cout << setw(5) << baths << " | ";
-                cout << setw(7) << fixed << setprecision(1) << area << " | ";
-                cout << setw(8) << ownerId << "\n";
+                cout << setw(5) << id << " | ";
+                cout << setw(18) << name.substr(0, 18) << " | ";
+                cout << setw(16) << location.substr(0, 16) << " | ";
+                cout << "$" << setw(16) << fixed << setprecision(2) << price << " | ";
+                cout << setw(8) << type << " | ";
+                cout << (available ? "Yes" : "No") << "\n";
             }
         }
         sqlite3_finalize(listStmt);
@@ -304,8 +298,22 @@ public:
             _getch();
             return;
         }
-    }
 
+        // Delete property
+        string deleteSql = "DELETE FROM properties WHERE id = " + to_string(id) + ";";
+        char* errMsg = nullptr;
+
+        cout << "\n";
+        if (sqlite3_exec(db, deleteSql.c_str(), nullptr, nullptr, &errMsg) == SQLITE_OK) {
+            textattr(10);
+            cout << "Property '" << propName << "' deleted successfully.";
+        } else {
+            textattr(12);
+            cout << "Failed to delete property: " << errMsg;
+            sqlite3_free(errMsg);
+        }
+        _getch();
+    }
     // ================= VIEW PROPERTIES BY OWNER =================
     void viewPropertiesByOwner(sqlite3* db) {
         system("cls");
