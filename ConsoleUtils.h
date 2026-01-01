@@ -21,7 +21,7 @@ inline void textattr(int color)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
-inline char** multiLineEditor(int xpos, int ypos, int l, char sr[], char er[], int lineno)
+inline char** multiLineEditor(int xpos, int ypos, int l, char sr[], char er[], int lineno,bool pass)
 {
     char** lines = new char*[lineno];
     int* lasts = new int[lineno];
@@ -41,7 +41,7 @@ inline char** multiLineEditor(int xpos, int ypos, int l, char sr[], char er[], i
 
     while (!done)
     {
-        // ãÓÍ ÇáãÄÔÑ ÇáÞÏíã
+
         gotoxy(xpos + oldChar, ypos + oldLine * 2 + 1);
         cout << " ";
 
@@ -52,12 +52,15 @@ inline char** multiLineEditor(int xpos, int ypos, int l, char sr[], char er[], i
             textattr(15); // áæä ÚÇÏí
             for (int j = 0; j < lasts[i]; j++)
             {
+                if(pass&&i==1)
+                    cout<<"*";
+                 else
                  cout << lines[i][j];
             }
-            for (int j = lasts[i]; j < l; j++) cout << ' '; // ãÓÍ Ãí ÈÞÇíÇ
+            for (int j = lasts[i]; j < l; j++) cout << ' ';
         }
 
-        // ÑÓã ÇáãÄÔÑ ÊÍÊ ÇáãßÇä ÇáÍÇáí
+
         gotoxy(xpos + currentChar, ypos + currentLine * 2 + 1);
         textattr(240); // ÎáÝíÉ ÓæÏÇÁ Úáì ÃÈíÖ
         cout << "_";
@@ -66,12 +69,12 @@ inline char** multiLineEditor(int xpos, int ypos, int l, char sr[], char er[], i
         oldLine = currentLine;
         oldChar = currentChar;
 
-        // æÖÚ ÇáãÄÔÑ Ýí ãßÇä ÇáßÊÇÈÉ (ÍÑÝ ÂÎÑ)
+
         gotoxy(xpos + currentChar, ypos + currentLine * 2);
 
         ch = _getch();
 
-        if (ch == -32) // Arrow keys
+        if (ch == -32)
         {
             ch = _getch();
             switch (ch)

@@ -331,7 +331,7 @@
 	<sys/uio.h>
 	<math.h>
 
-1767157709 source:e:\supertryhard\swe\project\swe-team\main.cpp
+1767236429 source:e:\supertryhard\swe\project\swe-team\main.cpp
 	<iostream>
 	"sqlite3.h"
 	<string>
@@ -340,13 +340,14 @@
 	"PropertyManager.h"
 	"UserManager.h"
 	"DBManager.h"
+	"FilterationManager.h"
 	"AdminManager.h"
 	"ConsoleUtils.h"
 
 1767105066 e:\supertryhard\swe\project\swe-team\sqlite3.h
 	<stdarg.h>
 
-1767151313 e:\supertryhard\swe\project\swe-team\propertymanager.h
+1767236429 e:\supertryhard\swe\project\swe-team\propertymanager.h
 	"UserManager.h"
 	<iostream>
 	<vector>
@@ -355,21 +356,24 @@
 	"sqlite3.h"
 	<windows.h>
 	<conio.h>
+	"DBManager.h"
+	"Property.h"
 
 1767151313 e:\supertryhard\swe\project\swe-team\usermanager.h
 	"sqlite3.h"
 
-1767156108 e:\supertryhard\swe\project\swe-team\dbmanager.h
+1767236429 e:\supertryhard\swe\project\swe-team\dbmanager.h
 	<iostream>
 	<string>
 	<vector>
 	"sqlite3.h"
+	"Property.h"
 
-1767160112 e:\supertryhard\swe\project\swe-team\consoleutils.h
+1767246800 e:\supertryhard\swe\project\swe-team\consoleutils.h
 	<windows.h>
 	<iostream>
 
-1767158987 source:e:\supertryhard\swe\project\swe-team\usermanager.cpp
+1767246800 source:e:\supertryhard\swe\project\swe-team\usermanager.cpp
 	"UserManager.h"
 	<iostream>
 	<conio.h>
@@ -378,7 +382,7 @@
 	"ConsoleUtils.h"
 	<regex>
 
-1767160229 e:\supertryhard\swe\project\swe-team\adminmanager.h
+1767246989 e:\supertryhard\swe\project\swe-team\adminmanager.h
 	"PropertyManager.h"
 	"UserManager.h"
 	"sqlite3.h"
@@ -388,6 +392,7 @@
 	<conio.h>
 	<windows.h>
 	<iostream>
+	<cstdlib>
 	"ConsoleUtils.h"
 
 1767191871 source:d:\iti\swe\swe-team\swe-team\main.cpp
@@ -789,4 +794,21 @@
 	<unicode/utf16.h>
 	<sys/uio.h>
 	<math.h>
+
+1767236429 e:\supertryhard\swe\project\swe-team\property.h
+	<string>
+
+1767236429 e:\supertryhard\swe\project\swe-team\filterationmanager.h
+	<iostream>
+	<vector>
+	<string>
+	<sstream>
+	<iomanip>
+	<algorithm>
+	<windows.h>
+	<conio.h>
+	<limits>
+	"sqlite3.h"
+	"DBManager.h"
+	"PropertyManager.h"
 

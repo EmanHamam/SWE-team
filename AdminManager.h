@@ -93,7 +93,7 @@ public:
         char er[6] = {126, 126, 57, 126, 126, 57}; // End range (~, ~, '9', ~, ~, '9')
 
         int editorX = startX + 20;
-        char** input = multiLineEditor(editorX, startY + 3, maxLen, sr, er, lineno);
+        char** input = multiLineEditor(editorX, startY + 3, maxLen, sr, er, lineno,false);
 
         // Trim and validate input
         string name = trim(input[0]);
@@ -434,7 +434,7 @@ public:
                 editorX[i] = startX + maxLabelWidth;
 
             // Call multiLineEditor
-            editedLines = multiLineEditor(editorX[0], 5, maxLen, sr, er, lineno);
+            editedLines = multiLineEditor(editorX[0], 5, maxLen, sr, er, lineno,false);
 
             string newName = strlen(editedLines[0]) > 0 ? string(editedLines[0]) : p.name;
             string newLocation = strlen(editedLines[1]) > 0 ? string(editedLines[1]) : p.location;
