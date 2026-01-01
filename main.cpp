@@ -136,7 +136,7 @@ bool executeMenuAction(int choice, sqlite3* db, DBManager* dbManager)
         case 1: am.deleteProperty(db); break;
         case 2: am.updateProperty(db); break;
         case 3: am.lockUnlockProperty(db); break;
-        case 4: pm.ViewAllProperies(db,dbManager); break;
+        case 4: am.viewAllPropertiesAdmin(db); break;
         case 5: am.viewPropertiesByOwner(db); break;
         case 6: isLoggedIn = false; isAdmin = false; currentUserId=-1; currentUserEmail=""; cout << "Logged out successfully!"; break;
         }
