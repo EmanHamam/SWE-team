@@ -604,7 +604,7 @@
 1767125870 d:\iti_intake46\swe_uml_project\swe-team\sqlite3.h
 	<stdarg.h>
 
-1767299373 d:\iti_intake46\swe_uml_project\swe-team\propertymanager.h
+1767300436 d:\iti_intake46\swe_uml_project\swe-team\propertymanager.h
 	"UserManager.h"
 	<iostream>
 	<vector>
@@ -626,7 +626,7 @@
 	"sqlite3.h"
 	"Property.h"
 
-1767298458 d:\iti_intake46\swe_uml_project\swe-team\filterationmanager.h
+1767313014 d:\iti_intake46\swe_uml_project\swe-team\filterationmanager.h
 	<iostream>
 	<vector>
 	<string>

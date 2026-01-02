@@ -196,7 +196,7 @@ private:
             if (!isLoggedIn)
             {
                 setAttr(14);
-                cout << "Guest Mode: Login to unlock contact info.";
+                cout << " Guest Mode: Login to unlock contact info.";
                 string options[] = {"1. Go Back", "2. Login", "3. Exit System"};
                 for (int i = 0; i < 3; i++)
                 {

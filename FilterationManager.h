@@ -16,7 +16,10 @@ using namespace std;
 string toLower(string s)
 {
     transform(s.begin(), s.end(), s.begin(),
-              [](unsigned char c){ return tolower(c); });
+              [](unsigned char c)
+    {
+        return tolower(c);
+    });
     return s;
 }
 
@@ -52,13 +55,12 @@ public:
         while (filtering)
         {
             if (needsClear)
-        {
-            system("cls");
-            needsClear = false;
-        }
+            {
+                system("cls");
+                needsClear = false;
+            }
             drawFilterMenu(selectedFilter, numOptions);
             displayCurrentFilters();
-
 
             int key = _getch();
             if (key == 0 || key == 224)
@@ -123,7 +125,8 @@ private:
         setXY(20, 4);
         cout << "====================================================";
 
-        const char *filterOptions[] = {
+        const char *filterOptions[] =
+        {
             "Maximum Price ($)",
             "Property Type (Rent/Buy)",
             "Location",
@@ -132,7 +135,8 @@ private:
             "Minimum Area (m)",
             "Apply Filters & View Results",
             "Reset Filters",
-            "Back to Menu"};
+            "Back to Menu"
+        };
 
         int boxX = 22, boxY = 6, boxWidth = 50;
 
@@ -204,6 +208,7 @@ private:
                 cin.ignore(10000, '\n');
                 currentFilter.maxPrice = 999999999;
             }
+            showUpdateConfirmation();
             break;
 
         case 1:
@@ -216,12 +221,15 @@ private:
                 currentFilter.type = "Buy";
             else if (!currentFilter.type.empty())
                 currentFilter.type = "";
+
             break;
+
 
         case 2:
             cout << "Enter Location (partial match): ";
             cin.clear();
             getline(cin, currentFilter.location);
+            showUpdateConfirmation();
             break;
 
         case 3:
@@ -233,6 +241,7 @@ private:
                 cin.ignore(10000, '\n');
                 currentFilter.minRooms = 0;
             }
+            showUpdateConfirmation();
             break;
 
         case 4:
@@ -244,6 +253,7 @@ private:
                 cin.ignore(10000, '\n');
                 currentFilter.minBaths = 0;
             }
+            showUpdateConfirmation();
             break;
 
         case 5:
@@ -255,26 +265,26 @@ private:
                 cin.ignore(10000, '\n');
                 currentFilter.minArea = 0;
             }
+            showUpdateConfirmation();
             break;
         }
 
-        if (filterIndex < 6)
-        {
-            setAttr(10);
-            setXY(30, 7);
-            cout << "Filter updated successfully!";
-            setAttr(15);
-            setXY(30, 9);
-            cout << "Press any key to continue...";
-            _getch();
-            system("cls");
-
-        }
+    }
+    void showUpdateConfirmation()
+    {
+        setAttr(10);
+        setXY(30, 7);
+        cout << "Filter updated successfully!";
+        setAttr(15);
+        setXY(30, 9);
+        cout << "Press any key to continue...";
+        _getch();
+        system("cls");
     }
 
     void viewFilteredResults(sqlite3 *db)
     {
-        auto props = dbManager->filterProperties(currentFilter.maxPrice, currentFilter.type, currentFilter.location, currentFilter.minRooms, currentFilter.minBaths, currentFilter.minArea);
+        auto props = dbManager->filterProperties(currentFilter.maxPrice, currentFilter.type, toLower(currentFilter.location), currentFilter.minRooms, currentFilter.minBaths, currentFilter.minArea);
         pm.DisplayProperties(props, db, dbManager);
     }
 
